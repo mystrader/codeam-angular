@@ -1,0 +1,16 @@
+{
+  "herois": [
+    {
+      "name": "Batman",
+      "slug": "batman"
+    },
+    {
+      "name": "Super Homem",
+      "slug": "super-homem"
+    },
+    {
+      "name": "Homem Aranha",
+      "slug": "homem-aranha"
+    }
+  ]
+}
