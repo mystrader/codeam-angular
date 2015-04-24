@@ -1,5 +1,6 @@
 <div>
-    <h2>Heróis</h2>
+    <h2 translate="herois" translate-values="{editora: creator}"></h2>
+    <h3 ng-click="changeLang()">trocar idioma</h3>
     <ul>
         <li ng-repeat="heroi in herois">
             <a href="herois/{{heroi.slug}}">{{heroi.name}}</a>

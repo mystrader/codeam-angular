@@ -1,6 +1,6 @@
-var codeAmApp = angular.module('codeAmApp', ['ngRoute', 'codeamApp.directives', 'codeamApp.services']);
+var codeAmApp = angular.module('codeAmApp', ['ngRoute', 'codeamApp.directives', 'codeamApp.services', 'pascalprecht.translate']);
 
-codeAmApp.config(['$routeProvider', '$locationProvider', 'finalHeroisProvider', function($routeProvider, $locationProvider, finalHeroisProvider){
+codeAmApp.config(['$routeProvider', '$locationProvider', '$translateProvider', function($routeProvider, $locationProvider, $translateProvider){
     $routeProvider
         .when('/', {
             templateUrl: '/partials/home.html',
@@ -24,22 +24,35 @@ codeAmApp.config(['$routeProvider', '$locationProvider', 'finalHeroisProvider', 
 
     $locationProvider.html5Mode(true);
 
-    finalHeroisProvider.setSaudacao('Good morning! ');
+    $translateProvider.translations('en', {
+        'herois': 'Heroes from {{editora}}'
+    }).translations('pt', {
+        'herois': 'Heróis da {{editora}}'
+    });
+
+    $translateProvider.preferredLanguage('en');
 
 }]);
 
-codeAmApp.controller('HomeCtrl', ['$scope','heroiService', 'heroiFactory', 'finalHerois', function($scope, heroiService, heroiFactory, finalHerois) {
-    var myHeroi = new heroiService.fazerSaucadao('batman sevice');
-    heroiFactory.fazerSaudacao('batman factory');
-    finalHerois.fazerSaudacao();
-
+codeAmApp.controller('HomeCtrl', ['$scope', function($scope) {
 }]);
 
-codeAmApp.controller('HeroisCtrl', ['$scope', 'codeAmAppFactory', function($scope, codeAmAppFactory) {
+codeAmApp.controller('HeroisCtrl', ['$scope', 'codeAmAppFactory','$translate', function($scope, codeAmAppFactory, $translate) {
+
+    $scope.creator = "DC";
+
+    $scope.changeLang = function() {
+        $translate.use('pt');
+    };
+
     var codeAmCollection = new codeAmAppFactory();
     codeAmCollection.getHerois().then(function(response) {
         $scope.herois = codeAmCollection.herois;
-    })
+    });
+
+    $translate('herois').then(function(translatedText) {
+        $scope.heroisText = translatedText;
+    });
 }]);
 
 codeAmApp.controller('ViloesCtrl', ['$scope', 'codeAmAppFactory', function($scope, codeAmAppFactory) {
